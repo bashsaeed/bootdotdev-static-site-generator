@@ -52,7 +52,7 @@ def block_to_block_type(block: str) -> BlockType:
     return BlockType.PARAGRAPH
 
 
-def markdown_to_html_node(markdown):
+def markdown_to_html_node(markdown: str) -> ParentNode:
     blocks = markdown_to_blocks(markdown)
     children = []
     for block in blocks:
@@ -61,7 +61,7 @@ def markdown_to_html_node(markdown):
     return ParentNode("div", children, None)
 
 
-def block_to_html_node(block):
+def block_to_html_node(block: str) -> ParentNode:
     block_type = block_to_block_type(block)
     match block_type:
         case BlockType.PARAGRAPH:
@@ -80,7 +80,7 @@ def block_to_html_node(block):
             raise ValueError("invalid block type")
 
 
-def text_to_children(text):
+def text_to_children(text: str) -> list[ParentNode]:
     text_nodes = text_to_textnodes(text)
     children = []
     for text_node in text_nodes:
@@ -89,14 +89,14 @@ def text_to_children(text):
     return children
 
 
-def paragraph_to_html_node(block):
+def paragraph_to_html_node(block: str) -> ParentNode:
     lines = block.split("\n")
     paragraph = " ".join(lines)
     children = text_to_children(paragraph)
     return ParentNode("p", children)
 
 
-def heading_to_html_node(block):
+def heading_to_html_node(block: str) -> ParentNode:
     level = 0
     for char in block:
         if char == "#":
@@ -110,7 +110,7 @@ def heading_to_html_node(block):
     return ParentNode(f"h{level}", children)
 
 
-def code_to_html_node(block):
+def code_to_html_node(block: str) -> ParentNode:
     if not block.startswith("```") or not block.endswith("```"):
         raise ValueError("invalid code block")
     text = block[4:-3]
@@ -120,7 +120,7 @@ def code_to_html_node(block):
     return ParentNode("pre", [code])
 
 
-def olist_to_html_node(block):
+def olist_to_html_node(block: str) -> ParentNode:
     items = block.split("\n")
     html_items = []
     for item in items:
@@ -130,7 +130,7 @@ def olist_to_html_node(block):
     return ParentNode("ol", html_items)
 
 
-def ulist_to_html_node(block):
+def ulist_to_html_node(block: str) -> ParentNode:
     items = block.split("\n")
     html_items = []
     for item in items:
@@ -140,7 +140,7 @@ def ulist_to_html_node(block):
     return ParentNode("ul", html_items)
 
 
-def quote_to_html_node(block):
+def quote_to_html_node(block: str) -> ParentNode:
     lines = block.split("\n")
     new_lines = []
     for line in lines:
