@@ -1,6 +1,7 @@
 import unittest
 from inline_markdown import (
     split_nodes_delimiter,
+    extract_markdown_images,
 )
 
 from textnode import TextNode, TextType
@@ -84,6 +85,16 @@ class TestInlineMarkdown(unittest.TestCase):
                 TextNode(" word", TextType.TEXT),
             ],
             new_nodes,
+        )
+
+    def test_extract_markdown_images(self):
+        text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        self.assertEqual(
+            extract_markdown_images(text),
+            [
+                ("rick roll", "https://i.imgur.com/aKaOqIh.gif"),
+                ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg"),
+            ],
         )
 
 
