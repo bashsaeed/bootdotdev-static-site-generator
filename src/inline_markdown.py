@@ -31,4 +31,7 @@ def extract_markdown_images(text: str) -> list[tuple[str, str]]:
     return [(alt, url) for alt, url in all_images]
 
 
-
+def extract_markdown_links(text: str) -> list[tuple[str, str]]:
+    re_links = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+    all_links = re_links.findall(text)
+    return [(text, url) for text, url in all_links]
