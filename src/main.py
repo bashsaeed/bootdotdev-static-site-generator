@@ -4,7 +4,7 @@ from generate_page import generate_pages_recursive
 from copy_directory import copy_directory
 
 dir_path_static = "./static"
-dir_path_public = "./public"
+dir_path_public = "./docs"
 dir_path_content = "./content"
 template_path = "./template.html"
 
