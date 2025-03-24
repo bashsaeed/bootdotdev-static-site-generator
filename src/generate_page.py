@@ -3,8 +3,10 @@ import os
 from markdown_blocks import markdown_to_html_node
 
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
-    for root, dirs, files in os.walk(dir_path_content):
+def generate_pages_recursive(
+    dir_path_content: str, template_path: str, dest_dir_path: str, basepath: str
+) -> None:
+    for root, _, files in os.walk(dir_path_content):
         for filename in files:
             if not filename.endswith(".md"):
                 continue
@@ -22,10 +24,12 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
             dest_path = os.path.join(dest_dir_path, relative_html_path)
 
             # Generate the page using your earlier function
-            generate_page(from_path, template_path, dest_path)
+            generate_page(from_path, template_path, dest_path, basepath)
 
 
-def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
+def generate_page(
+    from_path: str, template_path: str, dest_path: str, basepath: str
+) -> None:
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
     # Read markdown
@@ -44,8 +48,11 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     title = extract_title(markdown_content)
 
     # Replace placeholders
-    final_html = template.replace("{{ Title }}", title).replace(
-        "{{ Content }}", html_content
+    final_html = (
+        template.replace("{{ Title }}", title)
+        .replace("{{ Content }}", html_content)
+        .replace('href="/', 'href="' + basepath)
+        .replace('src="/', 'src="' + basepath)
     )
 
     # Ensure destination directory exists
