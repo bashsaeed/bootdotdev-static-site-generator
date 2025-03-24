@@ -1,5 +1,6 @@
+import sys
 import os
-from generate_page import generate_page
+from generate_page import generate_pages_recursive
 from copy_directory import copy_directory
 
 dir_path_static = "./static"
@@ -9,11 +10,13 @@ template_path = "./template.html"
 
 
 def main():
+    args: list[str] = sys.argv
+    basepath = args[0] if args else "/"
     copy_directory(dir_path_static, dir_path_public)
-    generate_page(
-        os.path.join(dir_path_content, "index.md"),
-        template_path,
-        os.path.join(dir_path_public, "index.html"),
+    generate_pages_recursive(
+        os.path.join(basepath, dir_path_content),
+        os.path.join(basepath, template_path),
+        os.path.join(basepath, dir_path_public),
     )
 
 
